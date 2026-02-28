@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Time ❓</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="fade-in hearts-only">
+    <div class="center-box card">
+
+        <h1>How Well Do You Know Us? 💛</h1><br>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div id="quiz-container">
+
+            <!-- Question 1 -->
+            <div class="question active" data-correct="0">
+                <h3>1. A little science first (physics of light): 💚 + ___ = 💛</h3>
+                <div class="option">❤️</div>
+                <div class="option">💙</div>
+                <div class="option">🤍</div>
+                <div class="option">🧡</div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" data-correct="1">
+                <h3>2. Our first movie date?</h3>
+                <div class="option">25 Oct 2025</div>
+                <div class="option">8 Nov 2025</div>
+                <div class="option">1 Nov 2025</div>
+                <div class="option">15 Nov 2025</div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" data-correct="3">
+                <h3>3. The SRK movie I watched?</h3>
+                <div class="option">Kal Ho Naa Ho</div>
+                <div class="option">Kabhi Khushi Kabhie Gham</div>
+                <div class="option">Kuch Kuch Hota Hai</div>
+                <div class="option">Dilwale Dulhania Le Jayenge</div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" data-correct="2">
+                <h3>4. Our last fight was on?</h3>
+                <div class="option">25 Feb 2026</div>
+                <div class="option">26 Feb 2026</div>
+                <div class="option">27 Feb 2026</div>
+                <div class="option">28 Feb 2026</div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" data-correct="2">
+                <h3>5. Our relationship?</h3>
+                <div class="option">Lovers</div>
+                <div class="option">Hus-wife</div>
+                <div class="option">error-undefined</div>
+                <div class="option">Best friends</div>
+            </div>
+
+        </div>
+
+        <p id="scoreDisplay">Score: 0 / 5</p>
+        <p id="result"></p>
+
+        <button id="continueBtn" onclick="next('letter.html')" style="display:none;">
+            Something serious 💌
+        </button>
+
+    </div>
+    <canvas id="confetti-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+
+</html>

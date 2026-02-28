@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock my heart 💚</title>
+
+    <!-- Main Styles -->
+    <!-- Standard Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Apple Touch Icon (for iOS) -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- For high resolution devices -->
+    <link rel="icon" href="images/favicon.png" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts (Optional but Recommended) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="center-box fade-in hearts-only">
+    <h1>Unlock My Heart, Dear Moon 🌙</h1>
+    <p>Key is my Birthday...</p>
+    <input type="date" id="password" placeholder="Key...">
+    <button onclick="goToJourney()">Unlock ✨</button>
+
+    <script>
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        document.getElementById('password').value = today;
+
+        function goToJourney() {
+            const secret = "1999-05-04";
+            const input = document.getElementById("password").value;
+            let isSecretCorrect = (input === secret);
+            console.log(input);
+
+            // Save secret status in localStorage
+            localStorage.setItem("secretCorrect", isSecretCorrect ? "yes" : "no");
+            // Navigate after a tiny delay to ensure localStorage is saved
+            setTimeout(() => {
+                window.location = "journey.html";
+            }, 50);
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

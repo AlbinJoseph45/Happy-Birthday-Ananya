@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday 🎉🎂</title>
+
+    <!-- Main Styles -->
+    <!-- Standard Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Apple Touch Icon (for iOS) -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- For high resolution devices -->
+    <link rel="icon" href="images/favicon.png" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+
+        /* Center everything */
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+
+            z-index: 0;
+            /* behind everything */
+        }
+
+        /* Message section */
+        #message {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Proper image card center */
+        .image-card {
+            margin-top: 20px;
+            text-align: center;
+            max-width: 300px;
+            opacity: 0;
+            /* hidden initially */
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .image-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .image-card img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 400px) {
+            .count-animate {
+                font-size: 20px;
+            }
+        }
+    </style>
+
+    <!-- Google Fonts (Optional but Recommended) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="center-box fade-in" style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);">
+
+    <h1 id="count" class="count-animate"></h1>
+
+    <div id="message" class="hidden">
+        <p>
+            May your smile always shine brighter than the moon. 🌙 <br>
+            May your heart always feel loved. ❤️ <br>
+            May every year bring you closer to your dreams. ✨<br>
+            And may I always be the one walking beside you. 💛 <br><br>
+        </p>
+
+        <div class="image-card">
+            <img src="images/final.jpeg" alt="Our Memory">
+            <p style="color: black;"><b>Happy Birthday, My Forever.</b></p>
+        </div>
+    </div>
+
+    <canvas id="confetti"></canvas>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

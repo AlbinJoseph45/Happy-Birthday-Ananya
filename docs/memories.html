@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memories 🌙</title>
+
+    <!-- Main Styles -->
+    <!-- Standard Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Apple Touch Icon (for iOS) -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- For high resolution devices -->
+    <link rel="icon" href="images/favicon.png" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts (Optional but Recommended) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="fade-in hearts-only">
+    <audio id="bgMusic" loop>
+        <source src="mitwa.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="center-box">
+        <h1>Our Memories 🌙</h1>
+
+        <div class="cards-container">
+            <div class="card-memory">
+                <img src="images/memory-1.jpg" class="responsive">
+                <p>With our MMB gang 💛💚</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-2.jpeg" class="responsive">
+                <p>Lost in music 🎵💛</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-3.jpeg" class="responsive">
+                <p>Christmas vibes ⛄🎄</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-7.jpeg" class="responsive">
+                <p>Shopping mode on 👗🛒</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-4.jpeg" class="responsive">
+                <p>Divine day 🕯️🙏</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-6.jpeg" class="responsive">
+                <p>Before a fight 🔥💪</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-8.jpeg" class="responsive">
+                <p>The grant birthday 🎂🎉</p>
+            </div>
+            <div class="card-memory">
+                <img src="images/memory-5.jpeg" class="responsive">
+                <p>The undelivered gift 🎁💔</p>
+            </div>
+        </div>
+
+        <button onclick="next('puzzle.html')">Have some fun ✨</button>
+    </div>
+
+    <script>
+        const audio = document.getElementById("bgMusic");
+
+        // Wait for metadata before setting time
+        audio.addEventListener("loadedmetadata", async () => {
+
+            const savedTime = localStorage.getItem("bgMusicTime");
+
+            if (savedTime) {
+                audio.currentTime = parseFloat(savedTime);
+            }
+
+            try {
+                await audio.play(); // will require user interaction in some browsers
+            } catch (err) {
+                console.log("Autoplay blocked:", err);
+            }
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

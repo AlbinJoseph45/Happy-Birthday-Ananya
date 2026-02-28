@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Begins...</title>
+
+    <!-- Main Styles -->
+    <!-- Standard Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Apple Touch Icon (for iOS) -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- For high resolution devices -->
+    <link rel="icon" href="images/favicon.png" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts (Optional but Recommended) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="center-box fade-in hearts-only">
+    <audio id="bgMusic" loop>
+        <source src="mitwa.mp3" type="audio/mp3">
+    </audio>
+
+    <h1 id="typing"></h1>
+    <p id="secretMessage">You are my moon in every lifetime 🌙</p>
+    <button id="beginBtn">
+        Begin Our Story
+    </button>
+    <!-- Hidden visual section -->
+    <div id="experience" class="hidden">
+
+        <!-- Audio Visual Bars -->
+        <div id="audioVisual">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <!-- Image Card -->
+        <div class="image-card">
+            <img src="images/mitwa.jpg" alt="Our Memory">
+            <p>Every moment with you feels magical 💛</p>
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        const btn = document.getElementById('beginBtn');
+        const experience = document.getElementById('experience');
+        const secret = localStorage.getItem("secretCorrect");
+
+        let message = "Awesome, Welcome to our journey...";
+        if (secret === "no") {
+            message = "My Heart is always open for you...";
+        }
+
+        const textJourney = document.getElementById("typing");
+        let j = 0;
+        function typeWriter() {
+            if (j < message.length) {
+                textJourney.textContent += message.charAt(j);
+                j++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        typeWriter();
+
+        let clickCount = 0;
+
+        btn.addEventListener('click', async () => {
+
+            clickCount++;
+
+            if (clickCount === 1) {
+
+                try {
+                    audio.muted = false;
+
+                    audio.currentTime = 19;
+                    await audio.play();
+
+                    console.log("Audio started");
+                } catch (err) {
+                    console.log("Audio blocked:", err);
+                }
+
+                experience.classList.remove('hidden');
+
+                btn.innerText = "Enjoy the moment 💛";
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    btn.innerText = "Continue Our Story ✨";
+                    btn.disabled = false;
+                }, 10000);
+
+            } else if (clickCount === 2) {
+                localStorage.setItem("bgMusicTime", audio.currentTime);
+                window.location.href = 'memories.html';
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
