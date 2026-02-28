@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Align The Constellation 🌓</title>
+    <!-- Standard Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Apple Touch Icon (for iOS) -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- For high resolution devices -->
+    <link rel="icon" href="images/favicon.png" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="fade-in mystery-bg hearts-only">
+
+    <div class="center-box">
+        <h1>Align The Constellation ✨</h1>
+        <p>Tap the stars in the order of our first memory ⭐</p>
+
+        <div class="moon-container">
+            <div class="moon-glow">🌕</div>
+
+            <div class="stars">
+                <div class="star" data-id="1">
+                    <img src="images/star-1.jpeg" alt="Memory 1">
+                </div>
+                <div class="star" data-id="2">
+                    <img src="images/star-2.jpeg" alt="Memory 2">
+                </div>
+                <div class="star" data-id="3">
+                    <img src="images/star-3.jpeg" alt="Memory 3">
+                </div>
+                <div class="star" data-id="4">
+                    <img src="images/star-4.jpeg" alt="Memory 4">
+                </div>
+                <div class="star" data-id="5">
+                    <img src="images/star-5.jpeg" alt="Memory 5">
+                </div>
+            </div>
+        </div>
+
+        <div class="selected-memories" id="selectedMemories"></div>
+
+        <p id="feedback"></p>
+
+        <div id="unlockContent" style="display:none;">
+            <div class="card">
+                <img src="images/star-end.jpeg" class="responsive">
+                <p>You aligned my universe, Ananya 🌙💛</p>
+                <button onclick="next('quiz.html')">Continue</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
