@@ -1,5 +1,5 @@
 /* FLOATING ITEMS */
-const defaultItems = ["🌙", "✨", "🎈", "🎂", "💛"];
+const defaultItems = ["🌙", "✨", "🎈", "🎂", "💛", "💚"];
 const hearts = ["💛", "💚"];
 
 function createFloating(x = null, y = null, isAuto = false) {
@@ -151,12 +151,6 @@ function showFinalResult() {
 
     continueBtn.style.display = "inline-block";
 }
-
-/* LETTER */
-function revealLetter() {
-    document.querySelector(".letter").classList.add("show");
-}
-
 /* CONFETTI */
 function launchConfetti() {
     for (let i = 0; i < 120; i++) {
@@ -167,6 +161,11 @@ function launchConfetti() {
         document.body.appendChild(c);
         setTimeout(() => c.remove(), 3000);
     }
+}
+
+/* LETTER */
+function revealLetter() {
+    document.querySelector(".letter").classList.add("show");
 }
 
 /* COUNTDOWN WITH ANIMATION */
@@ -186,7 +185,7 @@ function countdown() {
             message.classList.remove("hidden");
             message.classList.add("fade-in");
 
-            launchConfetti();
+            launchFirework();
         } else {
             el.innerHTML = timeLeft;
             el.classList.add("pop");
@@ -200,7 +199,7 @@ countdown();
 
 
 /* IMPROVED CONFETTI */
-function launchConfetti() {
+function launchFirework() {
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
 
@@ -288,15 +287,18 @@ function initPuzzle() {
 
     const size = 3;
     const pieces = [];
+    const containerWidth = container.clientWidth; // get container width dynamically
+    const pieceSize = containerWidth / size;      // each piece size in px
 
-    // Create puzzle pieces
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
             const div = document.createElement("div");
             div.classList.add("puzzle-piece");
+            div.style.width = pieceSize + "px";      // responsive width
+            div.style.height = pieceSize + "px";     // responsive height
             div.style.backgroundImage = "url('images/us.jpeg')";
-            div.style.backgroundSize = `${size * 100}px ${size * 100}px`;
-            div.style.backgroundPosition = `-${c * 100}px -${r * 100}px`;
+            div.style.backgroundSize = `${containerWidth}px ${containerWidth}px`; // scale image to container
+            div.style.backgroundPosition = `-${c * pieceSize}px -${r * pieceSize}px`; // correct crop
             div.dataset.row = r;
             div.dataset.col = c;
             pieces.push(div);
@@ -314,46 +316,91 @@ function initPuzzle() {
     }));
     shuffled.forEach(p => container.appendChild(p));
 
-    let dragSrc = null;
+    // Unified pointer-based drag system
+    let activePiece = null;
+    let offsetX = 0;
+    let offsetY = 0;
+    let startParent = null;
+    let placeholder = null;
 
     pieces.forEach(p => {
-        p.setAttribute("draggable", "true");
 
-        // Desktop: Drag start
-        p.addEventListener("dragstart", e => {
+        p.addEventListener("pointerdown", e => {
             if (puzzleSolved) return;
-            dragSrc = p;
-            p.classList.add("dragging");
+
+            activePiece = p;
+            startParent = p.parentElement;
+
+            // Create placeholder
+            const rect = p.getBoundingClientRect();
+            placeholder = document.createElement("div");
+            placeholder.classList.add("puzzle-placeholder");
+            placeholder.style.width = rect.width + "px";
+            placeholder.style.height = rect.height + "px";
+
+            // Insert placeholder before removing piece from flow
+            startParent.insertBefore(placeholder, p.nextSibling);
+
+            // Now lift the piece
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            p.style.position = "fixed";
+            p.style.zIndex = "1000";
+            p.style.pointerEvents = "none";
+            p.style.left = rect.left + "px";
+            p.style.top = rect.top + "px";
+            p.style.width = rect.width + "px";
+            p.style.height = rect.height + "px";
+            p.style.transition = "none";
+            p.style.transform = "scale(1.08)";
+            p.style.boxShadow = "0 10px 25px rgba(0,0,0,0.3)";
         });
 
-        // Desktop: Drag end
-        p.addEventListener("dragend", e => {
-            if (puzzleSolved) return;
-            p.classList.remove("dragging");
-        });
+    });
 
-        // Desktop: Drag over
-        p.addEventListener("dragover", e => { if (!puzzleSolved) e.preventDefault(); });
+    window.addEventListener("pointermove", e => {
+        if (!activePiece || puzzleSolved) return;
 
-        // Desktop: Drop to swap
-        p.addEventListener("drop", e => {
-            if (puzzleSolved) return;
-            e.preventDefault();
-            if (dragSrc && dragSrc !== p) {
-                const parent = container;
-                const dragNext = dragSrc.nextSibling === p ? dragSrc : dragSrc.nextSibling;
-                parent.insertBefore(dragSrc, p);
-                parent.insertBefore(p, dragNext);
+        activePiece.style.left = (e.clientX - offsetX) + "px";
+        activePiece.style.top = (e.clientY - offsetY) + "px";
+    });
 
-                handleSwap(dragSrc, p); // Handle swap logic for both desktop and mobile
-            }
-        });
+    window.addEventListener("pointerup", e => {
+        const container = document.getElementById("puzzle");
+        const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
 
-        // Mobile: Touch end (simulates a move)
-        p.addEventListener("touchend", e => {
-            if (puzzleSolved) return;
-            handleSwap(p, p); // Handle same piece move for mobile
-        });
+        // Reset piece styles
+        activePiece.style.pointerEvents = "";
+        activePiece.style.position = "";
+        activePiece.style.zIndex = "";
+        activePiece.style.left = "";
+        activePiece.style.top = "";
+        activePiece.style.width = "";
+        activePiece.style.height = "";
+        activePiece.style.transform = "";
+        activePiece.style.boxShadow = "";
+        activePiece.style.transition = "";
+
+        // Default: return to original place
+        if (!dropTarget || !dropTarget.classList.contains("puzzle-piece") || dropTarget === activePiece) {
+            container.insertBefore(activePiece, placeholder);
+        } else {
+            const dragNext = placeholder.nextSibling === dropTarget ? placeholder : placeholder.nextSibling;
+
+            container.insertBefore(activePiece, dropTarget);
+            container.insertBefore(dropTarget, dragNext);
+
+            handleSwap(activePiece, dropTarget);
+        }
+
+        // Remove placeholder
+        if (placeholder) {
+            placeholder.remove();
+            placeholder = null;
+        }
+
+        activePiece = null;
     });
 }
 
@@ -362,7 +409,10 @@ function handleSwap(piece1, piece2) {
     const pieces = [piece1, piece2];
     const statuses = pieces.map(p => {
         const container = p.parentElement;
-        const idx = Array.from(container.children).indexOf(p);
+        const idx = Array
+            .from(container.children)
+            .filter(el => el.classList.contains("puzzle-piece"))
+            .indexOf(p);
         const r = Math.floor(idx / 3);
         const c = idx % 3;
         const key = p.dataset.row + "-" + p.dataset.col;
@@ -381,7 +431,7 @@ function handleSwap(piece1, piece2) {
     if (correctCount === 2) {
         // Both correct
         statuses.forEach(s => {
-            spawnHeart(s.piece);
+            requestAnimationFrame(() => spawnHeart(s.piece));
         });
         playSound('correct');
     } else if (correctCount === 0) {
@@ -394,7 +444,7 @@ function handleSwap(piece1, piece2) {
     } else if (correctCount === 1) {
         // One correct, one wrong
         const correctPiece = statuses.find(s => s.correct).piece;
-        spawnHeart(correctPiece);
+        requestAnimationFrame(() => spawnHeart(correctPiece));
         playSound('correct');
         // Nothing for the wrong piece
     }
@@ -435,7 +485,9 @@ function spawnSparkle(piece) {
 // Check puzzle completion
 function checkPuzzle() {
     const container = document.getElementById("puzzle");
-    const children = Array.from(container.children);
+    const children = Array
+        .from(container.children)
+        .filter(el => el.classList.contains("puzzle-piece"));
     let solved = true;
 
     children.forEach((p, idx) => {
@@ -454,11 +506,11 @@ function checkPuzzle() {
 
 // Celebrate victory: floating hearts and sounds
 function celebrateVictory() {
-    // Delay locking the puzzle until animation is finished
-    const victoryDuration = 4000; // Match the animation duration
+    puzzleSolved = true; // 👈 lock immediately
 
     const container = document.getElementById("puzzle");
     const rect = container.getBoundingClientRect();
+    const victoryDuration = 4000;
 
     // Generate 50 floating hearts
     for (let i = 0; i < 50; i++) {
@@ -473,13 +525,7 @@ function celebrateVictory() {
         setTimeout(() => heart.remove(), victoryDuration);
     }
 
-    // Play celebration sound
     playSound('complete');
-
-    // Lock puzzle after victory animation
-    setTimeout(() => {
-        puzzleSolved = true;
-    }, victoryDuration); // Puzzle locks after the animation is done
 }
 
 // Play sound using Web Audio API
@@ -516,6 +562,28 @@ function playSound(type) {
             osc.stop(ctx.currentTime + 0.3);
         });
     }
+}
+
+window.addEventListener("resize", updatePuzzleSize);
+
+function updatePuzzleSize() {
+    const container = document.getElementById("puzzle");
+    if (!container) return;
+
+    const containerWidth = container.clientWidth;
+    const size = 3;
+    const pieceSize = containerWidth / size;
+
+    const pieces = container.querySelectorAll(".puzzle-piece");
+    pieces.forEach(p => {
+        const r = parseInt(p.dataset.row);
+        const c = parseInt(p.dataset.col);
+
+        p.style.width = pieceSize + "px";
+        p.style.height = pieceSize + "px";
+        p.style.backgroundSize = `${containerWidth}px ${containerWidth}px`;
+        p.style.backgroundPosition = `-${c * pieceSize}px -${r * pieceSize}px`;
+    });
 }
 
 // Initialize puzzle when the page loads

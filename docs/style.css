@@ -551,6 +551,16 @@ body.fade-in {
   transform: scale(1.1);
 }
 
+.puzzle-piece {
+    touch-action: none;
+    user-select: none;
+}
+
+.puzzle-placeholder {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
 /* Hearts */
 .heart {
   position: fixed;
@@ -691,9 +701,16 @@ body.fade-in {
 /* Green-Yellow Bars */
 .bar {
   width: 8px;
+  height: 30px;
   background: linear-gradient(to top, #2ecc71, #f1c40f);
   border-radius: 4px;
+  transform-origin: bottom;
   animation: bounce 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes bounce {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
 }
 
 .bar:nth-child(2) {
@@ -706,16 +723,6 @@ body.fade-in {
 
 .bar:nth-child(4) {
   animation-delay: 0.3s;
-}
-
-@keyframes bounce {
-  from {
-    height: 5px;
-  }
-
-  to {
-    height: 30px;
-  }
 }
 
 /* Image card styling */
